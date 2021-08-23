@@ -1,4 +1,12 @@
-import { GraphQLObjectType, GraphQLString, GraphQlSchema } from "graphql";
+import { GraphQLObjectType, GraphQLString, GraphQLSchema } from "graphql";
+import * as _ from 'lodash';
+
+// dummy data
+var books = [
+    { name: 'Name of the Wind', genre: 'Fantasy', id: '1' },
+    { name: 'The Final Empire', genre: 'Fantasy', id: '2' },
+    { name: 'The long Earth', genre: 'Sci-Fi', id: '3' }
+]
 
 const BookType = new GraphQLObjectType({
     name: 'Book',
@@ -14,16 +22,16 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         book: {
             type: BookType,
-            args: {id: {type: GraphQLString}},
-            resolve(parent, args){
+            args: { id: { type: GraphQLString } },
+            resolve(parent, args) {
                 const id = args.id;
                 console.log(id, parent);
-                //code to get data from DB / other sources
+                return _.find(books, {id});
             }
         }
     }
 });
 
-export default new GraphQlSchema({
+export default new GraphQLSchema({
     query: RootQuery
 })
